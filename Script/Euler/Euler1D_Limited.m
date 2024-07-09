@@ -65,7 +65,7 @@ hold all
 while(time<Problem.FinalTime)
     
     lambda = sqrt(Problem.gas_gamma*pre./q(:,:,1)) + abs(q(:,:,2)./q(:,:,1));
-    dt     = Problem.CFL*min(min(dxmin./(lambda)));
+    dt     = Problem.CFL*min(min(dxmin./(lambda)))/Mesh.N^2;
     
     if(time+dt>Problem.FinalTime)
         dt = Problem.FinalTime-time;

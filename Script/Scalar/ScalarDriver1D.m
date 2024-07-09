@@ -28,7 +28,7 @@ Output.fname_base = Scalar_fnamebase1D(Problem,Mesh.N,Mesh.K,Limit,Viscosity,Mes
 
 % Solve Problem
 fprintf('... starting main solve\n')
-if(~strcmp(Limiter,'NONE'))
+if(~strcmp(Limiter,'NONE') |  strcmp(Visc_model,'NONE'))
     [u] = Scalar1D_Limited(u,Problem,Mesh,Limit,Net,Output);
 else
     [u] = Scalar1D_Visc(u,Problem,Mesh,Viscosity,Output);

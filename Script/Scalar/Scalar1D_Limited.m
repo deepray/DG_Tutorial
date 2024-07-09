@@ -42,7 +42,7 @@ hold all
 while(time<Problem.FinalTime)
     
     speed = max(max(abs(dflux(u))));
-    dt = Problem.CFL* min(dxmin/abs(speed));
+    dt = Problem.CFL* min(dxmin/abs(speed))/(Mesh.N^2);
     
     if(time+dt>Problem.FinalTime)
         dt = Problem.FinalTime-time;
