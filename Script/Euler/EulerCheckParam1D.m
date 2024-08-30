@@ -128,8 +128,17 @@ switch Indicator
         assert((isnumeric(TVBM) & TVBM >= 0.0),...
             'ERROR: ''TVBM'' must be a non-negative number')
         ind_var_req = true;
+
+    case 'KXRCF'
+        assert(exist('KXRCF_M','var')==1,...
+            'ERROR: ''KXRCF_M'' variable must be defined since Indicator = KXRCF')
+        assert((isnumeric(KXRCF_M) & KXRCF_M >= 0.0),...
+            'ERROR: ''KXRCF_M'' must be a non-negative number') 
+        ind_var_req = true;
         
     case 'NN'
+        assert(exist('NN_model','var')==1,...
+            'ERROR: ''NN_model'' variable must be defined since Indicator = NN')
      
         ind_var_req = true;
         
@@ -236,13 +245,22 @@ Mesh.mesh_pert = mesh_pert;
 Mesh.K         = K;
 
 Limit.Limiter    = Limiter;
-if(~strcmp(Limiter,'NONE'))
-    if(strcmp(Indicator,'TVB'))
-        Limit.TVBM = TVBM;
-    end
+Limit.Indicator  = Indicator;
+
+if(strcmp(Indicator,'TVB'))
+   Limit.TVBM = TVBM;
 end
 
-Limit.Indicator  = Indicator;
+if(strcmp(Indicator,'KXRCF'))
+    Limit.KXRCF_M = KXRCF_M;
+end
+
+if(strcmp(Indicator,'NN'))
+   Limit.NN_model = NN_model;
+end
+
+
+
 
 if(~strcmp(Limiter,'NONE'))
     Limit.lim_var = lim_var;

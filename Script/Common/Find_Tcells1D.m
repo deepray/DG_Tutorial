@@ -1,4 +1,4 @@
-function ind = Find_Tcells1D(u,Mesh,Limit,Net)
+function ind = Find_Tcells1D(u,vel,Mesh,Limit,Net)
 
 % Purpose: find all the troubled-cells for variable u
 % NOTE: u must include ghost cell values
@@ -27,6 +27,8 @@ elseif(strcmp(Limit.Indicator,'TVB'))
     ve1 = vk - minmodB([(vk-ue1);vk-vkm1;vkp1-vk],Limit.TVBM,Mesh.x(end,:)-Mesh.x(1,:));
     ve2 = vk + minmodB([(ue2-vk);vk-vkm1;vkp1-vk],Limit.TVBM,Mesh.x(end,:)-Mesh.x(1,:));
     ind = find(abs(ve1-ue1)>eps0 | abs(ve2-ue2)>eps0);
+elseif(strcmp(Limit.Indicator,'KXRCF'))
+    ind = KXRCF(u,vel,Mesh,Limit.KXRCF_M);   
 elseif(strcmp(Limit.Indicator,'NN'))
     tcell = ind_MLP1D([vkm1;vk;vkp1;ue1;ue2],Net);
     ind = find(tcell==1); 

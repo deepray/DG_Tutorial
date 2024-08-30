@@ -1,9 +1,9 @@
-function Net = read_mlp_param1D(REL_PATH)
+function Net = read_mlp_param1D(REL_PATH,NN_model)
 
 fprintf('... loading network weights\n')
 
 Net.avail    = true;
-Net.NN_Dir   = horzcat(REL_PATH,'Networks/MLP_v1');
+Net.NN_Dir   = horzcat(REL_PATH,'Networks/',NN_model);
 
 % Add NN_dit to path. This will be removed at the end of the solver run
 addpath(Net.NN_Dir);

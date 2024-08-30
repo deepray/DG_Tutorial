@@ -15,7 +15,7 @@ StartUp1D;
 
 % Extract MLP weights, biases and other parameters
 if(strcmp(Limit.Indicator,'NN'))
-    Net = read_mlp_param1D(REL_PATH);
+    Net = read_mlp_param1D(REL_PATH,Limit.NN_model);
 else
     Net.avail = false;
 end
@@ -36,12 +36,14 @@ Output.fname_base = Euler_fnamebase1D(Problem,Mesh.N,Mesh.K,Limit,Viscosity,Mesh
 
 
 % Solve Problem
+tic
 fprintf('... starting main solve\n')
 if(~strcmp(Limiter,'NONE'))
     q = Euler1D_Limited(q,Problem,Mesh,Limit,Net,Output);
 else
     q = Euler1D_Visc(q,Problem,Mesh,Viscosity,Output);
 end
+toc
 
 
 % Save final solution

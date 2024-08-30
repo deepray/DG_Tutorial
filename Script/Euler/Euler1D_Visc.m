@@ -32,6 +32,16 @@ plot(Mesh.x(:),pre(:),'b-','LineWidth',2)
 xlabel('x')
 ylabel('Pressure')
 
+% figure(300)
+% it = 0;
+% plot(Mesh.x(:),density(:),'b-','LineWidth',2)
+% xlabel('x')
+% ylabel('Density')
+% title(['time = ',num2str(time)])
+% fname = sprintf('%s_soln_density_it.png',fname_base);
+% print(fname,'-dpng')
+% it = it + 1;
+
 % Initialize solution at previous time step
 q_tmp=zeros(length(q(:)),3);
 
@@ -116,6 +126,15 @@ while(time<Problem.FinalTime)
         ylabel('Pressure')
         
         pause(.01)
+
+        % figure(300)
+        % plot(Mesh.x(:),density(:),'b-','LineWidth',2)
+        % xlabel('x')
+        % ylabel('Density')
+        % title(['time = ',num2str(time)])
+        % fname = sprintf('%s_soln_density_%d.png',fname_base,it);
+        % print(fname,'-dpng')
+        % it = it + 1;
         
     end  
     iter = iter + 1;

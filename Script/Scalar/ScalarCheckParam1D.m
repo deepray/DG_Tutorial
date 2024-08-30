@@ -81,8 +81,15 @@ switch Indicator
             'ERROR: ''TVBM'' variable must be defined since Indicator = TVB')
         assert((isnumeric(TVBM) & TVBM >= 0.0),...
             'ERROR: ''TVBM'' must be a non-negative number')
+    case 'KXRCF'
+        assert(exist('KXRCF_M','var')==1,...
+            'ERROR: ''KXRCF_M'' variable must be defined since Indicator = KXRCF')
+        assert((isnumeric(KXRCF_M) & KXRCF_M >= 0.0),...
+            'ERROR: ''KXRCF_M'' must be a non-negative number')    
         
     case 'NN'
+        assert(exist('NN_model','var')==1,...
+            'ERROR: ''NN_model'' variable must be defined since Indicator = NN')
      
     otherwise
         error('Unknown indicator type %s',Indicator)
@@ -164,6 +171,12 @@ Limit.Limiter    = Limiter;
 Limit.Indicator  = Indicator;
 if(strcmp(Indicator,'TVB'))
     Limit.TVBM = TVBM;
+end
+if(strcmp(Indicator,'KXRCF'))
+    Limit.KXRCF_M = KXRCF_M;
+end
+if(strcmp(Indicator,'NN'))
+    Limit.NN_model = NN_model;
 end
 
 % Setting parameters for viscosity models

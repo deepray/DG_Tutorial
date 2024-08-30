@@ -15,7 +15,7 @@ StartUp1D;
 
 % Extract MLP weights, biases and other parameters
 if(strcmp(Limit.Indicator,'NN'))
-    Net = read_mlp_param1D(REL_PATH);
+    Net = read_mlp_param1D(REL_PATH,Limit.NN_model);
 else
     Net.avail = false;
 end
@@ -27,12 +27,14 @@ u = Problem.u_IC(Mesh.x);
 Output.fname_base = Scalar_fnamebase1D(Problem,Mesh.N,Mesh.K,Limit,Viscosity,Mesh.mesh_pert);
 
 % Solve Problem
+tic
 fprintf('... starting main solve\n')
 if(~strcmp(Limiter,'NONE') |  strcmp(Visc_model,'NONE'))
     [u] = Scalar1D_Limited(u,Problem,Mesh,Limit,Net,Output);
 else
     [u] = Scalar1D_Visc(u,Problem,Mesh,Viscosity,Output);
 end
+toc
 
 % Save final solution
 Save_scalar_soln1D(u,Mesh.x,Output.fname_base);

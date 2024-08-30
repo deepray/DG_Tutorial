@@ -40,17 +40,13 @@ if(isfile(tcell_fname))
     set(gca,'FontSize',20)
     hold all
     
-    tline = fgetl(fid);
-    iter = 0; 
+    tline = fgetl(fid); 
     while ischar(tline)
         data  = str2num(char(regexp(tline,', ','split')));
         t     = data(1);
         xc    = data(2:end);
         
-        if(mod(iter,ind_iter) == 0)
-            plot(xc,t*ones(1,length(xc)),'r.')   
-        end
-        iter = iter + 1;
+        plot(xc,t*ones(1,length(xc)),'r.')   
         tline = fgetl(fid);
     end
     fname = sprintf('%s_tcells.png',fname_base);

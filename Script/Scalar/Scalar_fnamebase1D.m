@@ -13,9 +13,11 @@ elseif(strcmp(Limit.Indicator,'ALL'))
 elseif(strcmp(Limit.Indicator,'MINMOD'))
     fname = sprintf('%s_IND_%s',fname,Limit.Indicator);
 elseif(strcmp(Limit.Indicator,'TVB'))
-    fname = sprintf('%s_IND_%s_%d',fname,Limit.Indicator,Limit.TVBM);
+    fname = sprintf('%s_IND_%s_%.2f',fname,Limit.Indicator,Limit.TVBM);
+elseif(strcmp(Limit.Indicator,'KXRCF'))
+    fname = sprintf('%s_IND_%s_%.2f',fname,Limit.Indicator,Limit.KXRCF_M);
 elseif(strcmp(Limit.Indicator,'NN'))
-    fname = sprintf('%s_IND_%s',fname,Limit.Indicator);
+    fname = sprintf('%s_IND_%s_%s',fname,Limit.Indicator,Limit.NN_model);
 elseif(strcmp(Limit.Indicator,'FuShu'))
     fname = sprintf('%s_IND_FS',fname);    
 else

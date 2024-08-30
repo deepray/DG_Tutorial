@@ -1,4 +1,4 @@
-function [u] = Scalar1D_Limited(u,Problem,Mesh,Limit,Net,Output)
+function [u] = Scalar1D_Limited_save(u,Problem,Mesh,Limit,Net,Output)
 
 % Purpose  : Integrate 1D Scalar equation until
 %            FinalTime starting with
@@ -16,33 +16,41 @@ fid = fopen(strcat(Output.fname_base,'_tcells.dat'),'w');
 
 
 % Limit initial solution
-ind0  = Scalar1D_Tcells(u,Problem.bc_cond,Mesh,Limit,Net,dflux);
+ind0  = Scalar1D_Tcells(u,Problem.bc_cond,Mesh,Limit,Net);
 u     = Scalar1D_limit(u,ind0,Problem.bc_cond,Limit.Limiter,Mesh);
 
 
 Tcell_write1D(fid,time,xcen(ind0));
+
+piter = 0;
 figure(1)
-subplot(2,1,1)
-plot(Mesh.x(:),u(:),'b-','LineWidth',2)
+%subplot(2,1,1)
+plot(Mesh.x(:),u(:),'r-','LineWidth',2)
 xlabel('x')
 ylabel('u')
 xlim([Mesh.bnd_l,Mesh.bnd_r])
+ylim([-2,3])
 title(['time = ',num2str(time)])
+set(gca,'FontSize',20)
+fname = sprintf('%s_soln_%d.pdf',Output.fname_base,piter);
+print(fname,'-dpdf')
+piter=piter+1;
 
-subplot(2,1,2)
-plot(xcen(ind0),ones(1,length(ind0))*time,'r.')
-xlabel('x')
-ylabel('t')
-xlim([Mesh.bnd_l,Mesh.bnd_r])
-ylim([0,Problem.FinalTime])
-hold all
+% subplot(2,1,2)
+% plot(xcen(ind0),ones(1,length(ind0))*time,'r.')
+% xlabel('x')
+% ylabel('t')
+% xlim([Mesh.bnd_l,Mesh.bnd_r])
+% ylim([0,Problem.FinalTime])
+% hold all
 
 
 % outer time step loop
 while(time<Problem.FinalTime)
     
     speed = max(max(abs(dflux(u))));
-    dt = Problem.CFL* min(dxmin/abs(speed))/(Mesh.N^2);
+    %dt = Problem.CFL* min(dxmin/abs(speed))
+    dt = 0.0005;
     
     if(time+dt>Problem.FinalTime)
         dt = Problem.FinalTime-time;
@@ -55,7 +63,7 @@ while(time<Problem.FinalTime)
     u1  = u  + dt*rhsu;
     
     % Limit fields
-    ind1  = Scalar1D_Tcells(u1,Problem.bc_cond,Mesh,Limit,Net,dflux);
+    ind1  = Scalar1D_Tcells(u1,Problem.bc_cond,Mesh,Limit,Net);
     u1    = Scalar1D_limit(u1,ind1,Problem.bc_cond,Limit.Limiter,Mesh);
     
     
@@ -64,7 +72,7 @@ while(time<Problem.FinalTime)
     u2   = (3*u  + u1  + dt*rhsu )/4;
     
     % Limit fields
-    ind2  = Scalar1D_Tcells(u2,Problem.bc_cond,Mesh,Limit,Net,dflux);
+    ind2  = Scalar1D_Tcells(u2,Problem.bc_cond,Mesh,Limit,Net);
     u2    = Scalar1D_limit(u2,ind2,Problem.bc_cond,Limit.Limiter,Mesh);
     
     % SSP RK Stage 3.
@@ -72,7 +80,7 @@ while(time<Problem.FinalTime)
     u  = (u  + 2*u2  + 2*dt*rhsu )/3;
     
     % Limit solution
-    ind3  = Scalar1D_Tcells(u,Problem.bc_cond,Mesh,Limit,Net,dflux);
+    ind3  = Scalar1D_Tcells(u,Problem.bc_cond,Mesh,Limit,Net);
     u     = Scalar1D_limit(u,ind3,Problem.bc_cond,Limit.Limiter,Mesh);
     
     inda = unique([ind1,ind2,ind3]);
@@ -85,15 +93,20 @@ while(time<Problem.FinalTime)
     if(mod(iter,Output.plot_iter) == 0 || time >= Problem.FinalTime)
         
         figure(1)
-        subplot(2,1,1)
-        plot(Mesh.x(:),u(:),'b-','LineWidth',2)
+        %subplot(2,1,1)
+        plot(Mesh.x(:),u(:),'r-','LineWidth',2)
         xlabel('x')
         ylabel('u')
         title(['time = ',num2str(time)])
+        ylim([-2,3])
+        set(gca,'FontSize',20)
+        fname = sprintf('%s_soln_%d.pdf',Output.fname_base,piter);
+        print(fname,'-dpdf')
+        piter=piter+1;
         
-        subplot(2,1,2)
-        plot(xcen(inda),ones(1,length(inda))*time,'r.') 
-        pause(0.1)
+        % subplot(2,1,2)
+        % plot(xcen(inda),ones(1,length(inda))*time,'r.') 
+        % pause(0.1)
     end
     
     iter = iter + 1;

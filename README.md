@@ -16,7 +16,6 @@ This repository contains tutoral MATLAB code for RKDG-solvers to solve 1D conser
 
 * [Running the code](#markdown-header-running-the-code)
   * [Scalar 1D](#markdown-header-scalar-1d)
-  * [Shallow water equations 1D](#markdown-header-shallow-water-1d)
   * [Euler equations 1D](#markdown-header-euler-1d)
 
 
@@ -84,7 +83,8 @@ ScalarDriver1D;
  * `'ALL'`: All cells are flagged.
  * `'MINMOD'`: Uses the basic minmod limiter.
  * `'TVB'`: Uses the modified minmod-type TVB limiter. If this is chosen, then one also needs to set the variable `TVBM` to a positive number. Note that if this constant is set to 0, then the limiter reduces to the usual minmod limiter.
- * `'NN'`: Uses the trained neural network. 
+ * `'KXRCF'`: Uses the KXRCF indicator. If this is chosen, then one also needs to set the variable `KXRCF_M` to a positive number.
+ * `'NN'`: Uses the trained neural network. If this is chosen, then one also needs to set the variable `NN_model` to denote the network to use. Currently, `'MLP_v1'` is available.
 * The limiter usd to reconstruct the solution in each troubled-cell,is set using `Limiter`. The following options are currently available:
  * `'NONE'`: No limiting is applied.
  * `'MINMOD'`: MUSCL reconstruction using minmod limiter.

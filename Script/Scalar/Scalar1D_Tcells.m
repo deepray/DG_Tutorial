@@ -1,7 +1,10 @@
-function ind = Scalar1D_Tcells(u,bc_cond,Mesh,Limit,Net)
+function ind = Scalar1D_Tcells(u,bc_cond,Mesh,Limit,Net,dflux)
 
 u_ext = Apply_BC1D(u,bc_cond);
-ind   = Find_Tcells1D(u_ext,Mesh,Limit,Net);
+
+vel   = Mesh.AVG1D*dflux(u);
+
+ind   = Find_Tcells1D(u_ext,vel,Mesh,Limit,Net);
 
 return
 
